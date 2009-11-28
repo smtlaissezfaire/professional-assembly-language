@@ -1,8 +1,12 @@
 task :default => :compile
 
+def basename(file)
+  File.basename(file).gsub("\.s", "")
+end
+
 task :compile do
   Dir.glob("*.s").each do |file|
-    basename = File.basename(file)
+    basename = basename(file)
 
     sh "as -o #{basename}.o #{file} && ld -o #{basename} #{basename}.o"
   end
@@ -11,9 +15,9 @@ end
 task :clean do
   sh "rm -f *.o"
 
-  binaries = Dir.glob("*.s").map do |file|
-    basename = File.basename(file)
-  end
+  binaries = Dir.glob("*.s").map { |file| basename(file) }
 
-  sh "rm -f #{binaries.join(" ")}"
+  if binaries.any?
+    sh "rm -f #{binaries.join(" ")}"
+  end
 end
