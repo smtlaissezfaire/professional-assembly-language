@@ -10,8 +10,8 @@ output:
   .lcomm buffer, 12
 
 .section .text
-.globl _start
-_start:
+.globl main
+main:
 
   # same as before
   nop
