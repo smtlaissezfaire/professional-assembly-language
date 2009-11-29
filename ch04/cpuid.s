@@ -9,6 +9,8 @@ output:
 .section .text
 .globl _start
 _start:
+  # nop instruction for debugging (a bug in gdb)
+  nop
   # 0 = cpuid output (vendor id)
   movl  $0, %eax
   cpuid
