@@ -14,7 +14,7 @@ end
 
 task :compile_debug do
   ASM_FLAGS << "-gstabs"
-  compile
+  Rake::Task[:compile].invoke
 end
 
 task :clean do
