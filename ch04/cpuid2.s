@@ -31,7 +31,7 @@ _start:
   pushl $output
   call printf
   # clear the params
-  add1 $8, %esp
+  addl $8, %esp
 
   # exit(0)
   pushl $0
