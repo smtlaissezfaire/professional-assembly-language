@@ -4,7 +4,7 @@ PROGS = ["cpuid", "cpuid2"]
 ASM_FLAGS = []
 
 task :compile do
-  asm_flags = ASM_FLAGS.join
+  asm_flags = ASM_FLAGS.join(" ")
 
   sh "as #{asm_flags} -o cpuid.o  cpuid.s  && ld -o cpuid  cpuid.o"
   sh "gcc -o cpuid2 cpuid2.s"
@@ -19,6 +19,6 @@ task :clean do
   object_files = PROGS.map { |prog| "#{prog}.o" }
   binaries     = PROGS.map { |prog| "#{prog}" }
 
-  sh "rm -rf #{object_files.join}"
-  sh "rm -rf #{binaries.join}"
+  sh "rm -rf #{object_files.join(" ")}"
+  sh "rm -rf #{binaries.join(" ")}"
 end
