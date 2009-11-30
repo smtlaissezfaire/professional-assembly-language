@@ -1,14 +1,20 @@
 task :default => :compile
 
 PROGS = ["cpuid"]
+ASM_FLAGS = []
 
 task :compile do
   PROGS.each do |prog|
     sh [
-     "as -o #{prog}.o #{prog}",
+     "as #{ASM_FLAGS.join(" ")} -o #{prog}.o #{prog}",
      "ld -o #{prog} #{prog}.o"
     ].join(" && ")
   end
+end
+
+task :compile_debug do
+  ASM_FLAGS << "-gstabs"
+  compile
 end
 
 task :clean do
