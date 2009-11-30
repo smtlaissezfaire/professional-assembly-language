@@ -1,23 +1,20 @@
 task :default => :compile
 
-def basename(file)
-  File.basename(file).gsub("\.s", "")
-end
+PROGS = ["cpuid"]
 
 task :compile do
-  Dir.glob("*.s").each do |file|
-    basename = basename(file)
-
-    sh "as -o #{basename}.o #{file} && ld -o #{basename} #{basename}.o"
+  PROGS.each do |prog|
+    sh [
+     "as -o #{prog}.o #{prog}",
+     "ld -o #{prog} #{prog}.o"
+    ].join(" && ")
   end
 end
 
 task :clean do
-  sh "rm -f *.o"
+  object_files = PROGS.map { |prog| "#{prog}.o" }
+  binaries     = PROGS.map { |prog| "#{prog}" }
 
-  binaries = Dir.glob("*.s").map { |file| basename(file) }
-
-  if binaries.any?
-    sh "rm -f #{binaries.join(" ")}"
-  end
+  sh "rm -rf #{object_files.join}"
+  sh "rm -rf #{binaries.join}"
 end
