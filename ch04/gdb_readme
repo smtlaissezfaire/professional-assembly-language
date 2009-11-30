@@ -1,0 +1,57 @@
+with the -gstabs flag to as, we can use gdb:
+
+gdb my_prog
+
+commands:
+  next / step (step can't step into assembly instructions, so acts as next)
+  cont - continue
+  break <breakpoint>
+  break *_start - break @ _start
+  break *_start+1 - break @_start + 1
+    (see the nop instruction - a bug in gdb prevents us from starting @ the first instruction)
+  info registers
+    (gdb) info registers
+    eax            0x0	0
+    ecx            0x0	0
+    edx            0x0	0
+    ebx            0x0	0
+    esp            0xbf81fda0	0xbf81fda0
+    ebp            0x0	0x0
+    esi            0x0	0
+    edi            0x0	0
+    eip            0x8048075	0x8048075 <_start+1>
+    eflags         0x292	[ AF SF IF ]
+    cs             0x73	115
+    ss             0x7b	123
+    ds             0x7b	123
+    es             0x7b	123
+    fs             0x0	0
+    gs             0x0	0
+  print/d  - decimal
+    print/x - hex
+    print/t - binary
+
+    (gdb) print/x $eip
+    $3 = 0x804807a
+
+  x -
+    x/nyz
+      n = number of fields to display
+      y = format output
+        c = char
+        d = decimal
+        x = hex
+      z =  size of the field
+        b = byte
+        h = 16 bit word
+        w = 32 bit word
+
+      (gdb) x/42cb &output
+      0x80490ac <output>:	84 'T'	104 'h'	101 'e'	32 ' '	112 'p'	114 'r'	111 'o'	99 'c'
+      0x80490b4 <output+8>:	101 'e'	115 's'	115 's'	111 'o'	114 'r'	32 ' '	86 'V'	101 'e'
+      0x80490bc <output+16>:	110 'n'	100 'd'	111 'o'	114 'r'	32 ' '	73 'I'	68 'D'	32 ' '
+      0x80490c4 <output+24>:	105 'i'	115 's'	32 ' '	39 '\''	71 'G'	101 'e'	110 'n'	117 'u'
+      0x80490cc <output+32>:	105 'i'	110 'n'	101 'e'	73 'I'	110 'n'	116 't'	101 'e'	108 'l'
+      0x80490d4 <output+40>:	39 '\''	10 '\n'
+
+      &output (notice the C syntax - it's a pointer)
